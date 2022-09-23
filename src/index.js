@@ -1,17 +1,37 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import ReactDOM from 'react-dom';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { registerMicroApps, start } from 'qiankun'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'antd/dist/antd.css'
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+registerMicroApps([
+  {
+    name: 'vueApp',
+    entry: '//localhost:8080',
+    container: '#container',
+    activeRule: '/app-vue'
+  },
+  {
+    name: 'reactApp',
+    entry: '//localhost:4000',
+    container: '#container',
+    activeRule: '/app-react'
+  }
+])
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+start()
+
+
+ReactDOM.render(
+<Router>
+  <Routes>
+    <Route path='/' element={<App />}>
+      <Route path='app-vue'></Route>
+      <Route path='app-react'></Route>
+    </Route>
+    <Route path='*' element={<App />}></Route>
+  </Routes>
+</Router>, document.getElementById('root'))
+
+
